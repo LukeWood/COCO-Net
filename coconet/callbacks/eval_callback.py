@@ -1,46 +1,25 @@
 import tensorflow as tf
 
 import wandb
-from coconet.utils import BaseWandbEvalCallback
+from wandb.keras import BaseWandbEvalCallback
 
 
 # TODO (ayulockin): Modify based on
 # https://gist.github.com/ayulockin/659172226c1e8d5cc7c8c2a33ad095a3
-class WandbClfCallback(BaseWandbEvalCallback):
+# when the data and model pipeline are complete.
+class RetinaNetWandbEvalCallback(BaseWandbEvalCallback):
     def __init__(self, args, dataloader, is_train=True):
-        data_table_columns = ["idx", "image", "ground_truth"]
-        pred_table_columns = ["epoch"] + data_table_columns + ["prediction"]
-        super().__init__(data_table_columns, pred_table_columns, is_train)
-
-        self.args = args
-        # Make unbatched iterator from `tf.data.Dataset`.
-        self.val_ds = dataloader.unbatch().take(self.args.callback_config.viz_num_images)
+        pass
 
     def add_ground_truth(self, logs):
-        for idx, (image, label) in enumerate(self.val_ds.as_numpy_iterator()):
-            if self.args.dataset_config.apply_one_hot:
-                label = tf.argmax(label, axis=-1)
-            self.data_table.add_data(idx, wandb.Image(image), label)
+        pass
 
     def add_model_predictions(self, epoch, logs):
-        data_table_ref = self.data_table_ref
-        table_idxs = data_table_ref.get_index()
-
-        for idx, (image, label) in enumerate(self.val_ds.as_numpy_iterator()):
-            pred = self.model.predict(tf.expand_dims(image, axis=0), verbose=0)
-            pred = tf.squeeze(tf.argmax(pred, axis=-1), axis=0)
-
-            self.pred_table.add_data(
-                epoch,
-                data_table_ref.data[idx][0],
-                data_table_ref.data[idx][1],
-                data_table_ref.data[idx][2],
-                pred,
-            )
+        pass
 
 
 def get_evaluation_callback(args, dataloader, is_train=True):
-    return WandbClfCallback(
+    return RetinaNetWandbEvalCallback(
         args,
         dataloader,
         is_train=is_train,
