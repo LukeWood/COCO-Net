@@ -1,14 +1,14 @@
 import tensorflow as tf
 
 import wandb
-from wandb.keras import BaseWandbEvalCallback
+from wandb.keras import WandbEvalCallback
 
 
 # TODO (ayulockin): Modify based on
 # https://gist.github.com/ayulockin/659172226c1e8d5cc7c8c2a33ad095a3
 # when the data and model pipeline are complete.
-class RetinaNetWandbEvalCallback(BaseWandbEvalCallback):
-    def __init__(self, args, dataloader, is_train=True):
+class RetinaNetWandbEvalCallback(WandbEvalCallback):
+    def __init__(self, args):
         pass
 
     def add_ground_truth(self, logs):
@@ -18,7 +18,7 @@ class RetinaNetWandbEvalCallback(BaseWandbEvalCallback):
         pass
 
 
-def get_evaluation_callback(args, dataloader, is_train=True):
+def get_evaluation_callback(args):
     return RetinaNetWandbEvalCallback(
         args,
         dataloader,

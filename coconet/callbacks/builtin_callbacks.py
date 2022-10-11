@@ -6,24 +6,24 @@ import wandb
 
 
 def get_earlystopper(args):
-    args = args.callback_config
+    args = args.callback_config.early_stopper
 
     earlystopper = tf.keras.callbacks.EarlyStopping(
-        monitor="val_loss",
+        monitor=args.monitor,
         patience=args.early_patience,
         verbose=0,
         mode="auto",
-        restore_best_weights=True,
+        restore_best_weights=args.restore_best_weights,
     )
 
     return earlystopper
 
 
 def get_reduce_lr_on_plateau(args):
-    args = args.callback_config
+    args = args.callback_config.reduce_lr_on_plateau
 
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
-        monitor="val_loss", factor=args.rlrp_factor, patience=args.rlrp_patience
+        monitor=args.monitor, factor=args.factor, patience=args.patience
     )
 
     return reduce_lr_on_plateau
